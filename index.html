@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYL Map 1 Boss Tracker (14 Mins Standby)</title>
+    <title>RYL Map 1 Boss Tracker (PC Audio Edition)</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,17 +13,8 @@
             padding: 15px;
             margin: 0;
         }
-        h1 {
-            color: #ffcc00;
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        p {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
+        h1 { color: #ffcc00; font-size: 1.5rem; margin-bottom: 5px; }
+        p { color: #aaa; font-size: 0.9rem; margin-top: 0; margin-bottom: 20px; }
         .container {
             max-width: 500px;
             margin: auto;
@@ -32,45 +23,19 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
         }
+        .btn-noti {
+            background-color: #00ccff; color: #000; border: none; padding: 10px 15px;
+            font-weight: bold; border-radius: 5px; cursor: pointer; margin-bottom: 15px;
+        }
         .boss-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 10px;
-            border-bottom: 1px solid #333;
-            transition: all 0.3s ease;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 10px; border-bottom: 1px solid #333; transition: all 0.3s ease;
         }
-        .boss-row:last-child {
-            border-bottom: none;
-        }
-        .boss-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-align: left;
-            flex: 1;
-        }
-        .timer {
-            font-size: 1.2rem;
-            color: #00ffcc;
-            font-family: monospace;
-            width: 90px;
-            text-align: center;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-        .btn-reset {
-            background-color: #ff3333;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 75px;
-        }
-        .btn-reset:hover {
-            background-color: #cc0000;
-        }
+        .boss-row:last-child { border-bottom: none; }
+        .boss-name { font-size: 1.1rem; font-weight: bold; text-align: left; flex: 1; }
+        .timer { font-size: 1.2rem; color: #00ffcc; font-family: monospace; width: 90px; text-align: center; margin: 0 10px; font-weight: bold; }
+        .btn-reset { background-color: #ff3333; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 75px; }
+        .btn-reset:hover { background-color: #cc0000; }
     </style>
 </head>
 <body>
@@ -78,9 +43,9 @@
     <h1>RYL Map 1 Boss Tracker</h1>
     <p>Masa ditetapkan: 14 Minit untuk persediaan awal teleport</p>
     
-    <div class="container" id="boss-list">
-        <!-- Senarai boss dijana di sini -->
-    </div>
+    <button class="btn-noti" onclick="requestNotificationPermission()">🔔 AKTIFKAN NOTIFIKASI PC</button>
+    
+    <div class="container" id="boss-list"></div>
 
     <script>
         const bosses = [
@@ -101,13 +66,21 @@
 
         const intervals = {};
 
+        function requestNotificationPermission() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        alert("Notifikasi PC Berjaya Diaktifkan!");
+                    }
+                });
+            }
+        }
+
         function renderList() {
             const bossListContainer = document.getElementById('boss-list');
-            
             const sortedBosses = [...bosses].sort((a, b) => {
                 let timeA = parseInt(localStorage.getItem(`ryl_boss_${a.id}`)) || 0;
                 let timeB = parseInt(localStorage.getItem(`ryl_boss_${b.id}`)) || 0;
-                
                 if (timeA === 0 && timeB === 0) return a.name.localeCompare(b.name);
                 if (timeA === 0) return 1;
                 if (timeB === 0) return -1;
@@ -115,12 +88,9 @@
             });
 
             bossListContainer.innerHTML = '';
-            
             sortedBosses.forEach(boss => {
                 let row = document.createElement('div');
                 row.className = 'boss-row';
-                row.setAttribute('data-id', boss.id);
-                
                 row.innerHTML = `
                     <div class="boss-name">${boss.name}</div>
                     <div class="timer" id="time_${boss.id}">READY</div>
@@ -129,9 +99,7 @@
                 bossListContainer.appendChild(row);
                 
                 let targetTime = localStorage.getItem(`ryl_boss_${boss.id}`);
-                if (targetTime) {
-                    updateCountdown(boss.id, parseInt(targetTime));
-                }
+                if (targetTime) updateCountdown(boss.id, parseInt(targetTime), boss.name);
             });
         }
 
@@ -142,12 +110,29 @@
             renderList();
         }
 
-        function updateCountdown(id, targetTime) {
+        function triggerAlert(bossName) {
+            // 1. Amaran Suara Robot PC
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(`Standby. ${bossName} respawn!`);
+                utterance.lang = 'en-US';
+                utterance.rate = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+
+            // 2. Amaran Pop-up Windows Desktop
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification("RYL BOSS ALERT!", {
+                    body: `Masa tamat! Sila teleport ke spot ${bossName} sekarang!`,
+                    icon: "https://github.com"
+                });
+            }
+        }
+
+        function updateCountdown(id, targetTime, bossName) {
             if (intervals[id]) clearInterval(intervals[id]);
 
             const timerElement = document.getElementById(`time_${id}`);
             const buttonElement = document.getElementById(`btn_${id}`);
-            
             if (!timerElement) return;
 
             function tick() {
@@ -162,11 +147,12 @@
                     }
                     if (buttonElement) buttonElement.innerText = "DEAD";
                     localStorage.removeItem(`ryl_boss_${id}`);
+                    
+                    triggerAlert(bossName); // Jalankan fungsi bunyi + pop-up
                     renderList();
                 } else {
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                     if (timerElement) {
                         timerElement.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                         timerElement.style.color = "#00ffcc";
