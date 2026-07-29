@@ -7,8 +7,8 @@
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; 
-            background: #000; 
-            color: #fff; 
+            background-color: #0b0b0b; 
+            color: #ffffff; 
             text-align: center; 
             padding: 10px; 
             margin: 0;
@@ -16,108 +16,107 @@
             flex-direction: column;
             align-items: center;
         }
-        h1 { color: #ffcc00; font-size: 1.4rem; margin: 5px 0; text-shadow: 0 0 8px rgba(255,204,0,0.5); }
-        p { color: #aaa; font-size: 0.8rem; margin: 0 0 10px 0; }
         
-        .btn-noti { 
-            background: #00ccff; border: none; padding: 8px 12px; font-weight: bold; 
-            border-radius: 4px; cursor: pointer; margin-bottom: 10px; color: #000;
-        }
-        
-        .tab-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .tab-btn { background: #222; color: #fff; border: 1px solid #444; padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .tab-btn.active { background: #990000; border-color: #ff3333; box-shadow: 0 0 8px #f00; }
-        
-        /* 🖼️ Bingkai Utama RYL Xeroth (Menggunakan pautan imej alternatif bebas sekatan) */
-        .wrapper-xeroth {
-            position: relative;
+        /* 🖼️ LOGO EMAS XEROTH KAT ATAS */
+        .header-logo {
             width: 100%;
-            max-width: 550px;
-            height: 480px;
-            background-image: url('https://weserv.nl');
+            max-width: 280px;
+            height: 90px;
+            background-image: url('https://r2.dev');
             background-size: contain;
             background-repeat: no-repeat;
-            background-position: center top;
-            margin: auto;
+            background-position: center;
+            margin: 15px 0 5px 0;
         }
 
-        /* 📦 Kotak Senarai Boss (Tepat di tengah-tengah ruang hitam bingkai) */
-        .container { 
-            position: absolute;
-            top: 36%;
-            left: 50%;
-            transform: translate(-50%, -18%);
-            width: 44%;
-            height: 190px;
-            overflow-y: auto;
+        h1 { color: #ffcc00; font-size: 1.4rem; margin: 5px 0; text-transform: uppercase; text-shadow: 0px 0px 10px rgba(255, 204, 0, 0.3); }
+        p { color: #aaa; font-size: 0.9rem; margin: 0 0 15px 0; }
+        
+        .btn-noti {
+            background-color: #00ccff; color: #000; border: none; padding: 10px 20px;
+            font-weight: bold; border-radius: 5px; cursor: pointer; margin-bottom: 15px;
+            font-size: 0.95rem; box-shadow: 0px 0px 10px rgba(0, 204, 255, 0.4);
         }
-        .container::-webkit-scrollbar { width: 0px; }
 
-        .boss-row { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 6px 2px; border-bottom: 1px solid rgba(255,204,0,0.2); 
+        .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
+        .tab-btn { background-color: #252525; color: #fff; border: 1px solid #444; padding: 10px 25px; font-size: 1.1rem; font-weight: bold; border-radius: 5px; cursor: pointer; }
+        .tab-btn.active { background-color: #ffcc00; color: #000; }
+
+        /* SUSUNAN 2 LAJUR PENUH SKRIN */
+        .container {
+            width: 100%;
+            max-width: 1100px; 
+            background: #161616; 
+            padding: 15px; 
+            border-radius: 10px; 
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px 25px;
+            box-sizing: border-box;
         }
-        .boss-row:last-child { border-bottom: none; }
-        .boss-name { font-size: 0.8rem; font-weight: bold; text-align: left; flex: 1; color: #eee; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .timer { font-size: 0.9rem; font-family: monospace; width: 55px; font-weight: bold; text-align: center; }
         
-        .color-ready { color: #00ff66; } 
-        .color-countdown { color: #ff3333; } 
-        .color-teleport { color: #ffcc00; } 
-        
-        .btn-reset { 
-            background: #660000; color: #fff; border: 1px solid #990000; 
-            padding: 3px 6px; border-radius: 3px; cursor: pointer; font-size: 0.7rem; font-weight: bold; 
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
         }
+
+        .boss-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 12px; border-bottom: 1px solid #2a2a2a; background: #1d1d1d; border-radius: 6px;
+        }
+        
+        .boss-name { font-size: 1.25rem; font-weight: bold; text-align: left; flex: 1; color: #f0f0f0; }
+        .timer { font-size: 1.4rem; font-family: monospace; width: 95px; text-align: center; margin: 0 15px; font-weight: bold; }
+        
+        .color-ready { color: #00ff66 !important; text-shadow: 0 0 8px rgba(0, 255, 102, 0.4); } 
+        .color-countdown { color: #ff3333 !important; text-shadow: 0 0 8px rgba(255, 51, 51, 0.4); } 
+        .color-teleport { color: #ffcc00 !important; text-shadow: 0 0 8px rgba(255, 204, 0, 0.6); } 
+
+        .btn-reset { background-color: #ff3333; color: white; border: none; padding: 10px 15px; font-size: 0.95rem; border-radius: 5px; cursor: pointer; font-weight: bold; width: 85px; }
     </style>
 </head>
 <body>
 
-    <h1>RYL2 XEROTH BOSS TRACKER</h1>
-    <p>Masa: 14 Minit | Amaran suara baki 1 minit terakhir</p>
+    <!-- LOGO XEROTH ATAS -->
+    <div class="header-logo"></div>
+
+    <h1>MAP 1 2 3 BOSS TRACKER</h1>
+    <p>Masa: 14 Minit | 📢 Amaran suara baki 1 minit terakhir</p>
     
     <button class="btn-noti" onclick="mintaIzin()">🔔 AKTIFKAN NOTIFIKASI PC</button>
     
     <div class="tab-container">
         <button class="tab-btn active" id="t1" onclick="tukarMap(1)">MAP 1</button>
         <button class="tab-btn" id="t2" onclick="tukarMap(2)">MAP 2</button>
-        <button class="tab-btn" id="tab3" onclick="tukarMap(3)">MAP 3</button>
+        <button class="tab-btn" id="t3" onclick="tukarMap(3)">MAP 3</button>
     </div>
 
-    <div class="wrapper-xeroth">
-        <div class="container" id="senaraiBox"></div>
-    </div>
+    <div class="container" id="senaraiBox"></div>
 
     <script>
-        if (!localStorage.getItem('clear_v11')) {
+        if (!localStorage.getItem('clear_v15_fixed')) {
             localStorage.clear();
-            localStorage.setItem('clear_v11', 'true');
+            localStorage.setItem('clear_v15_fixed', 'true');
         }
 
         const dataBoss = {
             1: [
-                { id: 101, name: "Ichzila" }, { id: 102, name: "Ancient town" },
-                { id: 103, name: "Sirens" }, { id: 104, name: "Nzambi Mpungu" },
-                { id: 105, name: "Guldan" }, { id: 106, name: "Brute" },
-                { id: 107, name: "Elune" }, { id: 108, name: "Abomy" },
-                { id: 109, name: "Ancient wood" }, { id: 110, name: "Death bringer" },
-                { id: 111, name: "Smoldering death" }, { id: 112, name: "Fallen archfield" },
+                { id: 101, name: "Ichzila" }, { id: 102, name: "Ancient town" }, { id: 103, name: "Sirens" }, 
+                { id: 104, name: "Nzambi Mpungu" }, { id: 105, name: "Guldan" }, { id: 106, name: "Brute" }, 
+                { id: 107, name: "Elune" }, { id: 108, name: "Abomy" }, { id: 109, name: "Ancient wood" }, 
+                { id: 110, name: "Death bringer" }, { id: 111, name: "Smoldering death" }, { id: 112, name: "Fallen archfield" }, 
                 { id: 113, name: "Hydra" }
             ],
             2: [
-                { id: 201, name: "Tartarus" }, { id: 202, name: "Gorep King" },
-                { id: 203, name: "Nianshou" }, { id: 204, name: "Death Bringer Mutant" },
-                { id: 205, name: "Blackhand" }, { id: 206, name: "Marshall" },
-                { id: 207, name: "Forsaken" }, { id: 208, name: "Headless" },
-                { id: 209, name: "Anubarak" }, { id: 210, name: "Asmodeus" }
+                { id: 201, name: "Tartarus" }, { id: 202, name: "Gorep King" }, { id: 203, name: "Nianshou" }, 
+                { id: 204, name: "Death Bringer Mutant" }, { id: 205, name: "Blackhand" }, { id: 206, name: "Marshall" }, 
+                { id: 207, name: "Forsaken" }, { id: 208, name: "Headless" }, { id: 209, name: "Anubarak" }, 
+                { id: 210, name: "Asmodeus" }
             ],
             3: [
-                { id: 301, name: "Trollbane" }, { id: 302, name: "Agrono" },
-                { id: 303, name: "Sephiroth" }, { id: 304, name: "Medusa" },
-                { id: 305, name: "Ocelot Wendigo" }, { id: 306, name: "Sirens" },
-                { id: 307, name: "Lamia" }, { id: 308, name: "Turkasaurus" },
-                { id: 309, name: "Baphomet" }, { id: 310, name: "Underbog" },
-                { id: 311, name: "Butcher" }
+                { id: 301, name: "Trollbane" }, { id: 302, name: "Agrono" }, { id: 303, name: "Sephiroth" }, 
+                { id: 304, name: "Medusa" }, { id: 305, name: "Ocelot Wendigo" }, { id: 306, name: "Sirens" }, 
+                { id: 307, name: "Lamia" }, { id: 308, name: "Turkasaurus" }, { id: 309, name: "Baphomet" }, 
+                { id: 310, name: "Underbog" }, { id: 311, name: "Butcher" }
             ]
         };
 
@@ -136,8 +135,7 @@
         function tukarMap(n) {
             mapAktif = n;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            const bPilih = document.getElementById('t' + n) || document.getElementById('tab3');
-            if (bPilih) bPilih.classList.add('active');
+            document.getElementById('t' + n).classList.add('active');
             papar();
         }
 
@@ -205,11 +203,9 @@
                 } else {
                     const m = Math.floor((baki % 3600000) / 60000);
                     const s = Math.floor((baki % 60000) / 1000);
-                    
                     elMasa.innerHTML = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
                     elMasa.className = "timer color-countdown";
                     if (elBtn) elBtn.innerText = "RESET";
-
                     if (m === 0 && !amaranSuara[id]) {
                         amaranSuara[id] = true;
                         bunyi(nama);
