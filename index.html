@@ -6,7 +6,7 @@
     <title>RYL2 XEROTH BOSS TRACKER</title>
     <style>
         body { 
-            font-family: sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             background: #000; 
             color: #fff; 
             text-align: center; 
@@ -21,30 +21,32 @@
         
         .btn-noti { 
             background: #00ccff; border: none; padding: 8px 12px; font-weight: bold; 
-            border-radius: 4px; cursor: pointer; margin-bottom: 10px;
+            border-radius: 4px; cursor: pointer; margin-bottom: 10px; color: #000;
         }
         
         .tab-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
         .tab-btn { background: #222; color: #fff; border: 1px solid #444; padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
         .tab-btn.active { background: #990000; border-color: #ff3333; box-shadow: 0 0 8px #f00; }
         
+        /* 🖼️ Bingkai Utama RYL Xeroth (Link baharu yang stabil) */
         .wrapper-xeroth {
             position: relative;
             width: 100%;
             max-width: 550px;
             height: 480px;
-            background-image: url('https://squarespace-cdn.com');
+            background-image: url('https://r2.dev');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center top;
             margin: auto;
         }
 
+        /* 📦 Kotak Senarai Boss (Tepat di tengah-tengah ruang hitam bingkai) */
         .container { 
             position: absolute;
             top: 36%;
             left: 50%;
-            transform: translate(-50%, -20%);
+            transform: translate(-50%, -18%);
             width: 44%;
             height: 190px;
             overflow-y: auto;
@@ -87,9 +89,9 @@
     </div>
 
     <script>
-        if (!localStorage.getItem('clear_v9')) {
+        if (!localStorage.getItem('clear_v10')) {
             localStorage.clear();
-            localStorage.setItem('clear_v9', 'true');
+            localStorage.setItem('clear_v10', 'true');
         }
 
         const dataBoss = {
