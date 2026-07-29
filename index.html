@@ -33,7 +33,6 @@
             background-color: #ffcc00; color: #000; border-color: #ffcc00; box-shadow: 0px 0px 8px rgba(255, 204, 0, 0.5);
         }
 
-        /* Kotak utama dikekalkan hitam pekat sepenuhnya */
         .container {
             width: 100%;
             max-width: 550px; 
@@ -43,18 +42,16 @@
             margin: auto;
         }
 
-        /* 🔒 LATAR BELAKANG HITAM SEBIJIK MACAM GAMBAR & GARISAN HALUS KELABU */
         .boss-row {
             display: flex; 
             justify-content: space-between; 
             align-items: center;
             padding: 12px 6px; 
-            background-color: #0c0c0c; /* Latar belakang hitam penuh */
-            border-bottom: 1.2px solid #222222; /* Garisan halus kelabu nipis */
+            background-color: #0c0c0c; 
+            border-bottom: 1.2px solid #222222; 
         }
         .boss-row:last-child { border-bottom: none; }
         
-        /* Tulisan kekal bersaiz besar */
         .boss-name { 
             font-size: 1.4rem; 
             font-weight: bold; 
@@ -75,20 +72,20 @@
         .color-countdown { color: #ff3333 !important; text-shadow: 0 0 6px rgba(255, 51, 51, 0.4); } 
         .color-teleport { color: #ffcc00 !important; text-shadow: 0 0 6px rgba(255, 204, 0, 0.6); } 
 
-        /* 🟥 KOTAK DEAD SEGI EMPAT TEPAT SEBIJIK MACAM GAMBAR */
+        /* 🟥 WARNA BUTANG TUKAR KEPADA MERAH MAROON GELAP SEBIJIK MACAM GAMBAR */
         .btn-reset { 
-            background-color: #ff3333; 
+            background-color: #990000; 
             color: white; 
             border: none; 
-            padding: 6px 10px; /* Saiz kompak segi empat tepat */
+            padding: 6px 10px; 
             font-size: 0.9rem; 
-            border-radius: 0px; /* Dipetakkan tajuk sepenuhnya, tiada bulat */
+            border-radius: 0px; 
             cursor: pointer; 
             font-weight: bold; 
             width: 70px; 
             letter-spacing: 0.5px;
         }
-        .btn-reset:hover { background-color: #cc0000; }
+        .btn-reset:hover { background-color: #770000; }
     </style>
 </head>
 <body>
@@ -107,9 +104,9 @@
     <div class="container" id="rylBox"></div>
 
     <script>
-        if (!localStorage.getItem('clear_v20_exact_fix')) {
+        if (!localStorage.getItem('clear_v21_exact_color')) {
             localStorage.clear();
-            localStorage.setItem('clear_v20_exact_fix', 'true');
+            localStorage.setItem('clear_v21_exact_color', 'true');
         }
 
         const dataBoss = {
