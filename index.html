@@ -33,33 +33,34 @@
             background-color: #ffcc00; color: #000; border-color: #ffcc00; box-shadow: 0px 0px 8px rgba(255, 204, 0, 0.5);
         }
 
+        /* Kotak utama dikekalkan hitam pekat sepenuhnya */
         .container {
             width: 100%;
             max-width: 550px; 
-            background: #141414; 
-            padding: 10px 15px; 
-            border-radius: 8px; 
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.5);
+            background: #0c0c0c; 
+            padding: 5px 15px; 
             box-sizing: border-box;
             margin: auto;
         }
 
+        /* 🔒 LATAR BELAKANG HITAM SEBIJIK MACAM GAMBAR & GARISAN HALUS KELABU */
         .boss-row {
             display: flex; 
             justify-content: space-between; 
             align-items: center;
             padding: 12px 6px; 
-            border-bottom: 1px solid #222;
+            background-color: #0c0c0c; /* Latar belakang hitam penuh */
+            border-bottom: 1.2px solid #222222; /* Garisan halus kelabu nipis */
         }
         .boss-row:last-child { border-bottom: none; }
         
-        /* 🎯 TULISAN DIBAWAH KINI SAH DIBESARKAN SECARA SERASI */
+        /* Tulisan kekal bersaiz besar */
         .boss-name { 
             font-size: 1.4rem; 
             font-weight: bold; 
             text-align: left; 
             flex: 1;
-            color: #f5f5f5; 
+            color: #ffffff; 
         }
         .timer { 
             font-size: 1.55rem; 
@@ -74,7 +75,19 @@
         .color-countdown { color: #ff3333 !important; text-shadow: 0 0 6px rgba(255, 51, 51, 0.4); } 
         .color-teleport { color: #ffcc00 !important; text-shadow: 0 0 6px rgba(255, 204, 0, 0.6); } 
 
-        .btn-reset { background-color: #ff3333; color: white; border: none; padding: 8px 14px; font-size: 0.95rem; border-radius: 5px; cursor: pointer; font-weight: bold; width: 80px; }
+        /* 🟥 KOTAK DEAD SEGI EMPAT TEPAT SEBIJIK MACAM GAMBAR */
+        .btn-reset { 
+            background-color: #ff3333; 
+            color: white; 
+            border: none; 
+            padding: 6px 10px; /* Saiz kompak segi empat tepat */
+            font-size: 0.9rem; 
+            border-radius: 0px; /* Dipetakkan tajuk sepenuhnya, tiada bulat */
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 70px; 
+            letter-spacing: 0.5px;
+        }
         .btn-reset:hover { background-color: #cc0000; }
     </style>
 </head>
@@ -91,13 +104,12 @@
         <button class="tab-btn" id="t3" onclick="tukarMap(3)">MAP 3</button>
     </div>
 
-    <!-- 🔒 ID DITUKAR KEPADA rylBox UNTUK MEMASTIKAN TULISAN BESAR MUNCUL -->
     <div class="container" id="rylBox"></div>
 
     <script>
-        if (!localStorage.getItem('clear_v19_final_fix')) {
+        if (!localStorage.getItem('clear_v20_exact_fix')) {
             localStorage.clear();
-            localStorage.setItem('clear_v19_final_fix', 'true');
+            localStorage.setItem('clear_v20_exact_fix', 'true');
         }
 
         const dataBoss = {
