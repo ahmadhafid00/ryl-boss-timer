@@ -1,1 +1,185 @@
-<h1>RYL Boss Timer</h1>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYL Map 1 Boss Tracker (14 Mins Standby)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            margin: 0;
+        }
+        h1 {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+        }
+        .boss-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        .boss-row:last-child {
+            border-bottom: none;
+        }
+        .boss-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: left;
+            flex: 1;
+        }
+        .timer {
+            font-size: 1.2rem;
+            color: #00ffcc;
+            font-family: monospace;
+            width: 90px;
+            text-align: center;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .btn-reset {
+            background-color: #ff3333;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 75px;
+        }
+        .btn-reset:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>RYL Map 1 Boss Tracker</h1>
+    <p>Masa ditetapkan: 14 Minit untuk persediaan awal teleport</p>
+    
+    <div class="container" id="boss-list">
+        <!-- Senarai boss dijana di sini -->
+    </div>
+
+    <script>
+        const bosses = [
+            { id: 1, name: "Ichzila", respawnTime: 14 },
+            { id: 2, name: "Ancient town", respawnTime: 14 },
+            { id: 3, name: "Sirens", respawnTime: 14 },
+            { id: 4, name: "Nzambi Mpungu", respawnTime: 14 },
+            { id: 5, name: "Guldan", respawnTime: 14 },
+            { id: 6, name: "Brute", respawnTime: 14 },
+            { id: 7, name: "Elune", respawnTime: 14 },
+            { id: 8, name: "Abomy", respawnTime: 14 },
+            { id: 9, name: "Ancient wood", respawnTime: 14 },
+            { id: 10, name: "Death bringer", respawnTime: 14 },
+            { id: 11, name: "Smoldering death", respawnTime: 14 },
+            { id: 12, name: "Fallen archfield", respawnTime: 14 },
+            { id: 13, name: "Hydra", respawnTime: 14 }
+        ];
+
+        const intervals = {};
+
+        function renderList() {
+            const bossListContainer = document.getElementById('boss-list');
+            
+            const sortedBosses = [...bosses].sort((a, b) => {
+                let timeA = parseInt(localStorage.getItem(`ryl_boss_${a.id}`)) || 0;
+                let timeB = parseInt(localStorage.getItem(`ryl_boss_${b.id}`)) || 0;
+                
+                if (timeA === 0 && timeB === 0) return a.name.localeCompare(b.name);
+                if (timeA === 0) return 1;
+                if (timeB === 0) return -1;
+                return timeA - timeB;
+            });
+
+            bossListContainer.innerHTML = '';
+            
+            sortedBosses.forEach(boss => {
+                let row = document.createElement('div');
+                row.className = 'boss-row';
+                row.setAttribute('data-id', boss.id);
+                
+                row.innerHTML = `
+                    <div class="boss-name">${boss.name}</div>
+                    <div class="timer" id="time_${boss.id}">READY</div>
+                    <button class="btn-reset" id="btn_${boss.id}" onclick="startTimer(${boss.id}, ${boss.respawnTime})">DEAD</button>
+                `;
+                bossListContainer.appendChild(row);
+                
+                let targetTime = localStorage.getItem(`ryl_boss_${boss.id}`);
+                if (targetTime) {
+                    updateCountdown(boss.id, parseInt(targetTime));
+                }
+            });
+        }
+
+        function startTimer(id, minutes) {
+            const now = new Date().getTime();
+            const targetTime = now + (minutes * 60 * 1000);
+            localStorage.setItem(`ryl_boss_${id}`, targetTime);
+            renderList();
+        }
+
+        function updateCountdown(id, targetTime) {
+            if (intervals[id]) clearInterval(intervals[id]);
+
+            const timerElement = document.getElementById(`time_${id}`);
+            const buttonElement = document.getElementById(`btn_${id}`);
+            
+            if (!timerElement) return;
+
+            function tick() {
+                const now = new Date().getTime();
+                const distance = targetTime - now;
+
+                if (distance < 0) {
+                    clearInterval(intervals[id]);
+                    if (timerElement) {
+                        timerElement.innerHTML = "TELEPORT!";
+                        timerElement.style.color = "#ffcc00";
+                    }
+                    if (buttonElement) buttonElement.innerText = "DEAD";
+                    localStorage.removeItem(`ryl_boss_${id}`);
+                    renderList();
+                } else {
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    if (timerElement) {
+                        timerElement.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        timerElement.style.color = "#00ffcc";
+                    }
+                    if (buttonElement) buttonElement.innerText = "RESET";
+                }
+            }
+
+            tick();
+            intervals[id] = setInterval(tick, 1000);
+        }
+
+        renderList();
+    </script>
+</body>
+</html>
