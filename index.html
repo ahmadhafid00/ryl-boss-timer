@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYL Map 1 Boss Tracker (PC Audio Edition)</title>
+    <title>RYL2 XEROTH MAP 1 2 3 BOSS TRACKER</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,8 +13,38 @@
             padding: 15px;
             margin: 0;
         }
-        h1 { color: #ffcc00; font-size: 1.5rem; margin-bottom: 5px; }
-        p { color: #aaa; font-size: 0.9rem; margin-top: 0; margin-bottom: 20px; }
+        h1 { color: #ffcc00; font-size: 1.6rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        p { color: #aaa; font-size: 0.9rem; margin-top: 0; margin-bottom: 15px; }
+        
+        .btn-noti {
+            background-color: #00ccff; color: #000; border: none; padding: 10px 15px;
+            font-weight: bold; border-radius: 5px; cursor: pointer; margin-bottom: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 204, 255, 0.4);
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #ffcc00;
+            color: #000;
+            box-shadow: 0px 0px 8px rgba(255, 204, 0, 0.5);
+        }
+
         .container {
             max-width: 500px;
             margin: auto;
@@ -23,62 +53,107 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
         }
-        .btn-noti {
-            background-color: #00ccff; color: #000; border: none; padding: 10px 15px;
-            font-weight: bold; border-radius: 5px; cursor: pointer; margin-bottom: 15px;
-        }
         .boss-row {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 10px; border-bottom: 1px solid #333; transition: all 0.3s ease;
         }
         .boss-row:last-child { border-bottom: none; }
         .boss-name { font-size: 1.1rem; font-weight: bold; text-align: left; flex: 1; }
-        .timer { font-size: 1.2rem; color: #00ffcc; font-family: monospace; width: 90px; text-align: center; margin: 0 10px; font-weight: bold; }
+        .timer { font-size: 1.2rem; font-family: monospace; width: 90px; text-align: center; margin: 0 10px; font-weight: bold; }
+        
+        /* Kelas warna pembilang */
+        .color-ready { color: #00ff66 !important; } 
+        .color-countdown { color: #ff3333 !important; } 
+        .color-teleport { color: #ffcc00 !important; } 
+
         .btn-reset { background-color: #ff3333; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 75px; }
         .btn-reset:hover { background-color: #cc0000; }
     </style>
 </head>
 <body>
 
-    <h1>RYL Map 1 Boss Tracker</h1>
-    <p>Masa ditetapkan: 14 Minit untuk persediaan awal teleport</p>
+    <!-- Tajuk Dikemas Kini ke RYL2 -->
+    <h1>RYL2 XEROTH MAP 1 2 3 BOSS TRACKER</h1>
+    <p>Masa: 14 Minit | 📢 Amaran suara akan berbunyi baki 1 minit terakhir</p>
     
     <button class="btn-noti" onclick="requestNotificationPermission()">🔔 AKTIFKAN NOTIFIKASI PC</button>
     
+    <div class="tab-container">
+        <button class="tab-btn active" id="tab-1" onclick="switchMap(1)">MAP 1</button>
+        <button class="tab-btn" id="tab-2" onclick="switchMap(2)">MAP 2</button>
+        <button class="tab-btn" id="tab-3" onclick="switchMap(3)">MAP 3</button>
+    </div>
+
     <div class="container" id="boss-list"></div>
 
     <script>
-        const bosses = [
-            { id: 1, name: "Ichzila", respawnTime: 14 },
-            { id: 2, name: "Ancient town", respawnTime: 14 },
-            { id: 3, name: "Sirens", respawnTime: 14 },
-            { id: 4, name: "Nzambi Mpungu", respawnTime: 14 },
-            { id: 5, name: "Guldan", respawnTime: 14 },
-            { id: 6, name: "Brute", respawnTime: 14 },
-            { id: 7, name: "Elune", respawnTime: 14 },
-            { id: 8, name: "Abomy", respawnTime: 14 },
-            { id: 9, name: "Ancient wood", respawnTime: 14 },
-            { id: 10, name: "Death bringer", respawnTime: 14 },
-            { id: 11, name: "Smoldering death", respawnTime: 14 },
-            { id: 12, name: "Fallen archfield", respawnTime: 14 },
-            { id: 13, name: "Hydra", respawnTime: 14 }
-        ];
+        const bossData = {
+            1: [
+                { id: 101, name: "Ichzila", respawnTime: 14 },
+                { id: 102, name: "Ancient town", respawnTime: 14 },
+                { id: 103, name: "Sirens", respawnTime: 14 },
+                { id: 104, name: "Nzambi Mpungu", respawnTime: 14 },
+                { id: 105, name: "Guldan", respawnTime: 14 },
+                { id: 106, name: "Brute", respawnTime: 14 },
+                { id: 107, name: "Elune", respawnTime: 14 },
+                { id: 108, name: "Abomy", respawnTime: 14 },
+                { id: 109, name: "Ancient wood", respawnTime: 14 },
+                { id: 110, name: "Death bringer", respawnTime: 14 },
+                { id: 111, name: "Smoldering death", respawnTime: 14 },
+                { id: 112, name: "Fallen archfield", respawnTime: 14 },
+                { id: 113, name: "Hydra", respawnTime: 14 }
+            ],
+            2: [
+                { id: 201, name: "Tartarus", respawnTime: 14 },
+                { id: 202, name: "Gorep King", respawnTime: 14 },
+                { id: 203, name: "Nianshou", respawnTime: 14 },
+                { id: 204, name: "Death Bringer Mutant", respawnTime: 14 },
+                { id: 205, name: "Blackhand", respawnTime: 14 },
+                { id: 206, name: "Marshall", respawnTime: 14 },
+                { id: 207, name: "Forsaken", respawnTime: 14 },
+                { id: 208, name: "Headless", respawnTime: 14 },
+                { id: 209, name: "Anubarak", respawnTime: 14 },
+                { id: 210, name: "Asmodeus", respawnTime: 14 }
+            ],
+            3: [
+                { id: 301, name: "Trollbane", respawnTime: 14 },
+                { id: 302, name: "Agrono", respawnTime: 14 },
+                { id: 303, name: "Sephiroth", respawnTime: 14 },
+                { id: 304, name: "Medusa", respawnTime: 14 },
+                { id: 305, name: "Ocelot Wendigo", respawnTime: 14 },
+                { id: 306, name: "Sirens", respawnTime: 14 },
+                { id: 307, name: "Lamia", respawnTime: 14 },
+                { id: 308, name: "Turkasaurus", respawnTime: 14 },
+                { id: 309, name: "Baphomet", respawnTime: 14 },
+                { id: 310, name: "Underbog", respawnTime: 14 },
+                { id: 311, name: "Butcher", respawnTime: 14 }
+            ]
+        };
 
+        let currentMap = 1;
         const intervals = {};
+        const alertedBosses = {};
 
         function requestNotificationPermission() {
             if ("Notification" in window) {
                 Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        alert("Notifikasi PC Berjaya Diaktifkan!");
-                    }
+                    if (permission === "granted") alert("Notifikasi Desktop PC Diaktifkan!");
                 });
             }
         }
 
+        function switchMap(mapNum) {
+            currentMap = mapNum;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${mapNum}`).classList.add('active');
+            renderList();
+        }
+
         function renderList() {
             const bossListContainer = document.getElementById('boss-list');
-            const sortedBosses = [...bosses].sort((a, b) => {
+            const activeBosses = bossData[currentMap];
+
+            const sortedBosses = [...activeBosses].sort((a, b) => {
                 let timeA = parseInt(localStorage.getItem(`ryl_boss_${a.id}`)) || 0;
                 let timeB = parseInt(localStorage.getItem(`ryl_boss_${b.id}`)) || 0;
                 if (timeA === 0 && timeB === 0) return a.name.localeCompare(b.name);
@@ -91,9 +166,10 @@
             sortedBosses.forEach(boss => {
                 let row = document.createElement('div');
                 row.className = 'boss-row';
+                
                 row.innerHTML = `
                     <div class="boss-name">${boss.name}</div>
-                    <div class="timer" id="time_${boss.id}">READY</div>
+                    <div class="timer color-ready" id="time_${boss.id}">READY</div>
                     <button class="btn-reset" id="btn_${boss.id}" onclick="startTimer(${boss.id}, ${boss.respawnTime})">DEAD</button>
                 `;
                 bossListContainer.appendChild(row);
@@ -107,22 +183,20 @@
             const now = new Date().getTime();
             const targetTime = now + (minutes * 60 * 1000);
             localStorage.setItem(`ryl_boss_${id}`, targetTime);
+            delete alertedBosses[id];
             renderList();
         }
 
         function triggerAlert(bossName) {
-            // 1. Amaran Suara Robot PC
             if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(`Standby. ${bossName} respawn!`);
+                const utterance = new SpeechSynthesisUtterance(`Warning. 1 minute left for ${bossName}. Standby!`);
                 utterance.lang = 'en-US';
-                utterance.rate = 1.0;
                 window.speechSynthesis.speak(utterance);
             }
 
-            // 2. Amaran Pop-up Windows Desktop
             if ("Notification" in window && Notification.permission === "granted") {
-                new Notification("RYL BOSS ALERT!", {
-                    body: `Masa tamat! Sila teleport ke spot ${bossName} sekarang!`,
+                new Notification("RYL2 1 MINUTE WARNING!", {
+                    body: `Baki 1 minit untuk ${bossName}! Sila sedia untuk teleport!`,
                     icon: "https://github.com"
                 });
             }
@@ -131,41 +205,24 @@
         function updateCountdown(id, targetTime, bossName) {
             if (intervals[id]) clearInterval(intervals[id]);
 
-            const timerElement = document.getElementById(`time_${id}`);
-            const buttonElement = document.getElementById(`btn_${id}`);
-            if (!timerElement) return;
-
             function tick() {
                 const now = new Date().getTime();
                 const distance = targetTime - now;
 
+                const timerElement = document.getElementById(`time_${id}`);
+                const buttonElement = document.getElementById(`btn_${id}`);
+
+                if (!timerElement) return;
+
                 if (distance < 0) {
                     clearInterval(intervals[id]);
-                    if (timerElement) {
-                        timerElement.innerHTML = "TELEPORT!";
-                        timerElement.style.color = "#ffcc00";
-                    }
+                    timerElement.innerHTML = "TELEPORT!";
+                    timerElement.className = "timer color-teleport";
                     if (buttonElement) buttonElement.innerText = "DEAD";
                     localStorage.removeItem(`ryl_boss_${id}`);
-                    
-                    triggerAlert(bossName); // Jalankan fungsi bunyi + pop-up
+                    delete alertedBosses[id];
                     renderList();
                 } else {
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    if (timerElement) {
-                        timerElement.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                        timerElement.style.color = "#00ffcc";
-                    }
-                    if (buttonElement) buttonElement.innerText = "RESET";
-                }
-            }
-
-            tick();
-            intervals[id] = setInterval(tick, 1000);
-        }
-
-        renderList();
-    </script>
-</body>
-</html>
+                    
